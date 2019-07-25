@@ -133,6 +133,13 @@ class Graph {
 
         return s
     }
+
+    initializeColor(){
+        let colors=[];
+        for(let i=0;i<this.vertices.length-1;i++){
+            colors[this.vertices[i]]='white'
+        }
+    }
 }
 
 var graph = new Graph();
