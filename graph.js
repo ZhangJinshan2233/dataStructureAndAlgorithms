@@ -27,24 +27,24 @@ class Stack {
     }
 }
 
-class Queue{
-    constructor(){
-        this.items=[];
+class Queue {
+    constructor() {
+        this.items = [];
 
     }
-    enqueue(element){
+    enqueue(element) {
         this.items.push(element)
     }
 
-    dequene(element){
+    dequeue(element) {
         return this.items.shift(element)
     }
 
-    font(){
+    font() {
         return this.items[0]
     }
-    isEmpty(){
-        return this.items.length===0
+    isEmpty() {
+        return this.items.length === 0
     }
 }
 class Dictionary {
@@ -134,12 +134,41 @@ class Graph {
         return s
     }
 
-    initializeColor(){
-        let colors=[];
-        for(let i=0;i<this.vertices.length-1;i++){
-            colors[this.vertices[i]]='white'
+    initializeColor() {
+        let colors = [];
+        for (let i = 0; i < this.vertices.length - 1; i++) {
+            colors[this.vertices[i]] = 'white';
+
+        }
+        return colors
+    }
+
+    bfs(v, callback) {
+        let color = this.initializeColor();
+        let queue = new Queue();
+        queue.enqueue(v);
+        while (!queue.isEmpty()) {
+            let u = queue.dequeue()
+            let neighbors = this.adjList.get(u); 
+            color[u] = 'grey';
+            for (let i = 0; i < neighbors.length; i++) { 
+                let w = neighbors[i];
+                if (color[w] === 'white') {
+                    color[w] = 'grey';
+                    queue.enqueue(w);
+                }
+            }
+            color[u] = 'black';
+            if (callback) {
+                callback(u);
+            }
         }
     }
+
+}
+
+function printNode(value) {
+    console.log('Visited vertex: ' + value); 
 }
 
 var graph = new Graph();
@@ -156,5 +185,5 @@ graph.addEdge('D', 'G');
 graph.addEdge('D', 'H');
 graph.addEdge('B', 'E');
 graph.addEdge('B', 'F');
-graph.addEdge('E', 'I');
-console.log(graph.toString())
+graph.addEdge('E', 'I')
+graph.bfs(myVertices[0], printNode); //{18}
