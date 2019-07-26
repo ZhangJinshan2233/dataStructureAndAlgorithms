@@ -206,7 +206,7 @@ class Graph {
 };
 
 
-function printNode(value) {
+let  printNode=(value)=> {
     console.log('Visited vertex: ' + value);
 }
 
@@ -227,4 +227,20 @@ graph.addEdge('B', 'E');
 graph.addEdge('B', 'F');
 
 let shortestPathA = graph.BFS(myVertices[0]);
-console.log(shortestPathA);
+
+let fromVertex=myVertices[0];
+for (let i=1;i<myVertices.length;i++){
+    
+    let toVertex=myVertices[i];
+    path=new Stack();
+
+    for (let v=toVertex;v!==fromVertex;v=shortestPathA.predecessors[v]){
+        path.push(v)
+    }
+    path.push(fromVertex);
+    var s=path.pop();
+    while (!path.isEmpty()){
+        s+='-'+path.pop()
+    }
+    console.log(s)
+}
