@@ -149,9 +149,9 @@ class Graph {
         queue.enqueue(v);
         while (!queue.isEmpty()) {
             let u = queue.dequeue()
-            let neighbors = this.adjList.get(u); 
+            let neighbors = this.adjList.get(u);
             color[u] = 'grey';
-            for (let i = 0; i < neighbors.length; i++) { 
+            for (let i = 0; i < neighbors.length; i++) {
                 let w = neighbors[i];
                 if (color[w] === 'white') {
                     color[w] = 'grey';
@@ -163,20 +163,52 @@ class Graph {
                 callback(u);
             }
         }
+    };
+
+    BFS(v) {
+        let color = this.initializeColor();
+        let queue = new Queue();
+        let d = [];
+        let pred = [];
+        queue.enqueue(v);
+        for (let i = 0; i < this.vertices.length; i++) {
+            d[this.vertices[i]] = 0;
+            pred[this.vertices[i]] = null;
+        }
+        while (!queue.isEmpty()) {
+            let u = queue.dequeue()
+            let neighbors = this.adjList.get(u);
+            color[u] = 'grey';
+            for (let j = 0; j < neighbors.length; j++) {
+                let w = neighbors[j];
+                if (color[w] === 'white') {
+                    color[w] = 'grey';
+                    d[w] = d[u] + 1;
+                    pred[w] = u;
+                    queue.enqueue(w);
+                }
+            }
+            color[u] = 'black';
+        }
+        return {
+            distances: d,
+            predecessors: pred
+        };
     }
 
-}
+};
+
 
 function printNode(value) {
-    console.log('Visited vertex: ' + value); 
+    console.log('Visited vertex: ' + value);
 }
 
 var graph = new Graph();
-var myVertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']; //{7} 
-for (var i = 0; i < myVertices.length; i++) { //{8}
+var myVertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+for (var i = 0; i < myVertices.length; i++) {
     graph.addVertex(myVertices[i]);
 }
-graph.addEdge('A', 'B'); //{9}
+graph.addEdge('A', 'B');
 graph.addEdge('A', 'C');
 graph.addEdge('A', 'D');
 graph.addEdge('C', 'D');
@@ -185,5 +217,7 @@ graph.addEdge('D', 'G');
 graph.addEdge('D', 'H');
 graph.addEdge('B', 'E');
 graph.addEdge('B', 'F');
-graph.addEdge('E', 'I')
-graph.bfs(myVertices[0], printNode); //{18}
+graph.addEdge('E', 'I');
+
+let shortestPathA = graph.BFS(myVertices[0]);
+console.log(shortestPathA);
