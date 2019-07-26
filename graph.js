@@ -36,15 +36,15 @@ class Queue {
         this.items.push(element)
     }
 
-    dequeue(element) {
-        return this.items.shift(element)
+    dequeue() {
+        return this.items.shift()
     }
 
     font() {
         return this.items[0]
     }
     isEmpty() {
-        return this.items.length === 0
+        return this.items.length == 0
     }
 }
 class Dictionary {
@@ -124,11 +124,12 @@ class Graph {
         let s = '';
         for (let i = 0; i < this.vertices.length; i++) {
             s += this.vertices[i] + '->';
-            var neighbors = this.adjList.get(this.vertices[i]);
+            let neighbors = this.adjList.get(this.vertices[i]);
             for (let j of neighbors) {
                 s += j + ' ';
             }
             s += '\n';
+            console.log(i)
         }
 
         return s
@@ -136,7 +137,7 @@ class Graph {
 
     initializeColor() {
         let colors = [];
-        for (let i = 0; i < this.vertices.length - 1; i++) {
+        for (let i = 0; i < this.vertices.length; i++) {
             colors[this.vertices[i]] = 'white';
 
         }
@@ -146,10 +147,15 @@ class Graph {
     bfs(v, callback) {
         let color = this.initializeColor();
         let queue = new Queue();
+       
         queue.enqueue(v);
+       
         while (!queue.isEmpty()) {
+            console.log(queue)
             let u = queue.dequeue()
+       
             let neighbors = this.adjList.get(u);
+            console.log(neighbors)
             color[u] = 'grey';
             for (let i = 0; i < neighbors.length; i++) {
                 let w = neighbors[i];
@@ -159,6 +165,7 @@ class Graph {
                 }
             }
             color[u] = 'black';
+            console.log(u)
             if (callback) {
                 callback(u);
             }
@@ -212,12 +219,12 @@ graph.addEdge('A', 'B');
 graph.addEdge('A', 'C');
 graph.addEdge('A', 'D');
 graph.addEdge('C', 'D');
+graph.addEdge('E', 'I');
 graph.addEdge('C', 'G');
 graph.addEdge('D', 'G');
 graph.addEdge('D', 'H');
 graph.addEdge('B', 'E');
 graph.addEdge('B', 'F');
-graph.addEdge('E', 'I');
 
 let shortestPathA = graph.BFS(myVertices[0]);
 console.log(shortestPathA);
